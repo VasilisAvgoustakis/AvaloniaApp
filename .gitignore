@@ -1,0 +1,30 @@
+#####################################
+# .gitignore
+#####################################
+
+# Build-Ordner von .NET
+bin/
+obj/
+
+# Nutzer-/IDE-spezifische Dateien
+*.user
+*.suo
+*.csproj.user
+*.sln.ide
+
+# VS Code Settings
+.vscode/
+.vs/
+
+# Log-Dateien
+*.log
+Logs/
+*.tlog
+
+# Publikationsordner
+publish/
+
+# Sonstige
+*.pdb
+*.cache
+*.pyc

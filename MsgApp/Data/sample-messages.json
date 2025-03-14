@@ -1,0 +1,63 @@
+[
+    {
+      "SenderName": "Alice",
+      "SenderEmail": "alice@example.com",
+      "RecipientName": "Bob",
+      "RecipientEmail": "bob@example.com",
+      "Subject": "Willkommen in der neuen App",
+      "SentDate": "2025-03-01T09:00:00",
+      "Content": "Hi Bob, herzlich willkommen in unserer Nachrichten-App!",
+      "IsRead": false
+    },
+    {
+      "SenderName": "Bob",
+      "SenderEmail": "bob@example.com",
+      "RecipientName": "Alice",
+      "RecipientEmail": "alice@example.com",
+      "Subject": "RE: Willkommen!",
+      "SentDate": "2025-03-01T09:30:00",
+      "Content": "Hallo Alice, danke fürs Einladen. Das Interface sieht schon super aus.",
+      "IsRead": false
+    },
+    {
+      "SenderName": "Charlie",
+      "SenderEmail": "charlie@server.net",
+      "RecipientName": "Alice",
+      "RecipientEmail": "alice@example.com",
+      "Subject": "Meeting am Freitag",
+      "SentDate": "2025-02-28T16:45:00",
+      "Content": "Hallo Alice,\r\n\r\nvergiss nicht das Meeting am Freitag um 10 Uhr.\r\n\r\nVG,\r\nCharlie",
+      "IsRead": false
+    },
+    {
+      "SenderName": "Diana",
+      "SenderEmail": "diana@server.net",
+      "RecipientName": "Bob",
+      "RecipientEmail": "bob@example.com",
+      "Subject": "Grüße aus dem Urlaub",
+      "SentDate": "2025-02-20T08:10:00",
+      "Content": "Hey Bob,\r\n\r\nich grüße dich von meiner Reise. Das Wetter ist toll!\r\n\r\nBis bald,\r\nDiana",
+      "IsRead": false
+    },
+    {
+      "SenderName": "Erik",
+      "SenderEmail": "erik@beispiel.de",
+      "RecipientName": "Alice",
+      "RecipientEmail": "alice@example.com",
+      "Subject": "Rückmeldung zum Prototyp",
+      "SentDate": "2025-03-02T11:15:00",
+      "Content": "Hallo Alice,\r\n\r\nder Prototyp sieht vielversprechend aus! Ich hätte ein paar Ideen für die UI.\r\n\r\nGrüße,\r\nErik",
+      "IsRead": false
+    },
+    {
+      "SenderName": "Maria",
+      "SenderEmail": "maria@beispiel.de",
+      "RecipientName": "Charlie",
+      "RecipientEmail": "charlie@server.net",
+      "Subject": "Projekt-Update",
+      "SentDate": "2025-02-22T14:20:00",
+      "Content": "Hi Charlie,\r\n\r\nder aktuelle Stand des Projekts ist sehr gut. Wir liegen im Zeitplan.\r\n\r\nBeste Grüße,\r\nMaria",
+      "IsRead": false
+    }
+  ]
+  
