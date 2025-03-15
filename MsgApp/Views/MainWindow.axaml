@@ -1,0 +1,56 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="clr-namespace:MsgApp.ViewModels"
+        xmlns:models="clr-namespace:MsgApp.Models"
+        x:Class="MsgApp.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="MsgApp">
+  
+  
+
+  <Grid>
+    <Grid.ColumnDefinitions>
+      <!-- linke Spalte: feste Breite -->
+      <ColumnDefinition Width="300"/> 
+      <!-- rechte Spalte: dehnt sich -->
+      <ColumnDefinition Width="*"/>
+    </Grid.ColumnDefinitions>
+
+    
+
+    <!-- Listenansicht (Spalte 0) -->
+    <ListBox Grid.Column="0" 
+             ItemsSource="{Binding Messages}" 
+             SelectedItem="{Binding SelectedMessage}">
+      
+      <ListBox.ItemTemplate>
+        <!-- WIE das List-Item gerendert wird -->
+        <DataTemplate 
+          x:DataType="models:Message">
+          <StackPanel Orientation="Vertical" Spacing="4" Margin="4">
+            <TextBlock Text="{Binding SenderName}" FontWeight="Bold"/>
+            <TextBlock Text="{Binding Subject}"/>
+            <TextBlock Text="{Binding SentDate}"/>
+          </StackPanel>
+        </DataTemplate>
+      </ListBox.ItemTemplate>
+    </ListBox>
+
+    <!-- Detail-Ansicht (Spalte 1) -->
+    <StackPanel Grid.Column="1" Spacing="8">
+      <TextBlock Text="{Binding SelectedMessage.Subject}" FontSize="16" FontWeight="Bold"/>
+      <TextBlock Text="{Binding SelectedMessage.SenderName}" />
+      <TextBlock Text="{Binding SelectedMessage.SenderEmail}" />
+      <TextBlock Text="{Binding SelectedMessage.RecipientName}" />
+      <TextBlock Text="{Binding SelectedMessage.RecipientEmail}" />
+      <TextBlock Text="{Binding SelectedMessage.SentDate}" />
+      <TextBlock Text="{Binding SelectedMessage.Content}" TextWrapping="Wrap"/>
+      <!-- Evtl. noch ein Image für Gravatar etc. -->
+    </StackPanel>
+
+    <StackPanel Orientation="Horizontal" Spacing="10">
+        <Button Content="Sortiere nach Absender" Click="SortBySender_Click"/>
+        <Button Content="Sortiere nach Datum" Click="SortByDate_Click"/>
+    </StackPanel>
+  </Grid>
+</Window>

@@ -22,8 +22,8 @@ namespace MsgApp.Tests
             var messages = loader.LoadMessagesFromJson(path);
 
             // Assert
-            Assert.IsNotNull(messages);
-            Assert.IsNotEmpty(messages);
+            Assert.That(messages, Is.Not.Null);
+            Assert.That(messages, Is.Not.Null);
         }
 
         [Test]
@@ -36,8 +36,8 @@ namespace MsgApp.Tests
 
             var messages = loader.LoadMessagesFromJson(path);
 
-            Assert.IsNotNull(messages);
-            Assert.IsEmpty(messages);
+            Assert.That(messages, Is.Not.Null);
+            Assert.That(messages, Is.Empty);
         }
     }
 }

@@ -6,5 +6,10 @@
 
     <Application.Styles>
         <FluentTheme />
+        <Style Selector="TextBlock">
+            <Setter Property="FontFamily" Value="Arial"/>
+        </Style>
+        
+        
     </Application.Styles>
 </Application>
