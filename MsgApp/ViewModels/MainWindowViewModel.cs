@@ -21,7 +21,19 @@ namespace MsgApp.ViewModels
     => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
     public ObservableCollection<Message>? Messages { get; set; }
-    public Message? SelectedMessage { get; set; }
+
+    private Message? _selectedMessage;
+    public Message? SelectedMessage 
+    { 
+      get => _selectedMessage;
+      set
+      {
+        if (_selectedMessage == value) return;
+
+        _selectedMessage = value;
+        OnPropertyChanged();
+      }
+    }
 
     // Konstruktor fürs MainWindow
     public MainWindowViewModel(JsonMessageLoader messageLoader, ILogger<MainWindowViewModel> logger)
@@ -31,14 +43,12 @@ namespace MsgApp.ViewModels
       _messageLoader = messageLoader;
       try
       {
-        _logger.LogInformation("Versuchen Messages in MainViewModel zu laden!");
-        var messages = _messageLoader.LoadMessagesFromJson("C:/Users/Vasilis Avgoustakis/Documents/Projects/AvaloniaApp/MsgApp/Data/sample-messages.json");
+        var messages = _messageLoader.LoadMessagesFromJson("../MsgApp/Data/sample-messages.json");
         Messages = new ObservableCollection<Message>(messages ?? new List<Message>());
-        _logger.LogInformation("Messages erfolgreich in MainViewModel geladen!");
       }
       catch(Exception ex)
       {
-        _logger.LogError(ex, "Fehler beim Laden: ");
+        _logger.LogError(ex, "Fehler beim Laden der Messages in ViewModel! ");
       }
 
     }

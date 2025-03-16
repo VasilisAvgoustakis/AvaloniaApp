@@ -1,56 +1,90 @@
 <Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="clr-namespace:MsgApp.ViewModels"
-        xmlns:models="clr-namespace:MsgApp.Models"
-        x:Class="MsgApp.MainWindow"
-        x:DataType="vm:MainWindowViewModel"
-        Title="MsgApp">
-  
-  
+  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+  xmlns:vm="clr-namespace:MsgApp.ViewModels"
+  xmlns:models="clr-namespace:MsgApp.Models"
+  x:Class="MsgApp.MainWindow"
+  x:DataType="vm:MainWindowViewModel"
+  Title="MsgApp">
 
   <Grid>
     <Grid.ColumnDefinitions>
-      <!-- linke Spalte: feste Breite -->
-      <ColumnDefinition Width="300"/> 
+      <!-- linke Spalte: Message list-->
+      <ColumnDefinition Width="Auto" MinWidth="240" MaxWidth="800" />
+      <!-- Mittlere Spalte für GrittSplitter-->
+      <ColumnDefinition Width="5"/>
       <!-- rechte Spalte: dehnt sich -->
-      <ColumnDefinition Width="*"/>
+      <ColumnDefinition Width="*" MinWidth="240" />
     </Grid.ColumnDefinitions>
 
-    
+    <Grid Grid.Column="0">
+      <Grid.RowDefinitions>
+        <RowDefinition Height="Auto"/>
+        <RowDefinition Height="Auto"/>
+      </Grid.RowDefinitions>
 
-    <!-- Listenansicht (Spalte 0) -->
-    <ListBox Grid.Column="0" 
-             ItemsSource="{Binding Messages}" 
-             SelectedItem="{Binding SelectedMessage}">
+      <StackPanel Grid.Row="0" Orientation="Horizontal">
+        <Viewbox Stretch="Uniform" StretchDirection="Both">
+          <Button Content="Sortiere nach Absender" Click="SortBySender_Click" />
+        </Viewbox>
+        
+        <Viewbox Stretch="Uniform" StretchDirection="Both">
+          <Button Content="Sortiere nach Datum" Click="SortByDate_Click" />
+        </Viewbox>
+      </StackPanel>
       
-      <ListBox.ItemTemplate>
-        <!-- WIE das List-Item gerendert wird -->
-        <DataTemplate 
-          x:DataType="models:Message">
-          <StackPanel Orientation="Vertical" Spacing="4" Margin="4">
-            <TextBlock Text="{Binding SenderName}" FontWeight="Bold"/>
-            <TextBlock Text="{Binding Subject}"/>
-            <TextBlock Text="{Binding SentDate}"/>
-          </StackPanel>
-        </DataTemplate>
-      </ListBox.ItemTemplate>
-    </ListBox>
+      <!-- Listenansicht (Spalte 0) -->
+      <ListBox Grid.Row="1"
+        ItemsSource="{Binding Messages}"
+        SelectedItem="{Binding SelectedMessage}">
+
+        <ListBox.ItemTemplate>
+          <!-- WIE das List-Item gerendert wird -->
+          <DataTemplate
+            x:DataType="models:Message">
+            <StackPanel Orientation="Vertical" Spacing="4" Margin="4">
+              
+              <TextBlock Text="{Binding SenderName}" FontWeight="Bold" />
+              <TextBlock Text="{Binding Subject}" />
+              <TextBlock Text="{Binding SentDate}" />
+            </StackPanel>
+          </DataTemplate>
+        </ListBox.ItemTemplate>
+      </ListBox>
+    </Grid>
 
     <!-- Detail-Ansicht (Spalte 1) -->
-    <StackPanel Grid.Column="1" Spacing="8">
-      <TextBlock Text="{Binding SelectedMessage.Subject}" FontSize="16" FontWeight="Bold"/>
-      <TextBlock Text="{Binding SelectedMessage.SenderName}" />
-      <TextBlock Text="{Binding SelectedMessage.SenderEmail}" />
-      <TextBlock Text="{Binding SelectedMessage.RecipientName}" />
-      <TextBlock Text="{Binding SelectedMessage.RecipientEmail}" />
-      <TextBlock Text="{Binding SelectedMessage.SentDate}" />
-      <TextBlock Text="{Binding SelectedMessage.Content}" TextWrapping="Wrap"/>
+    <GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
+    
+
+    <!-- Detail-Ansicht (Spalte 2) -->
+    <StackPanel Grid.Column="2" Spacing="8">
+      <TextBlock  FontSize="16" FontWeight="Bold">
+        <Run Text="Titel: " />
+        <Run Text="{Binding SelectedMessage.Subject}" />
+      </TextBlock>
+      <TextBlock  >
+        <Run Text="Absender: " FontWeight="Bold" />
+        <Run Text="{Binding SelectedMessage.SenderName}" />
+        <Run Text=" | "/>
+        <Run Text="E-mail: " FontWeight="Bold"/>
+        <Run Text="{Binding SelectedMessage.SenderEmail}" />
+      </TextBlock>
+      <TextBlock  >
+        <Run Text="Empfänger: " FontWeight="Bold"/>
+        <Run Text="{Binding SelectedMessage.RecipientName}" />
+        <Run Text=" | "/>
+        <Run Text="E-mail: " FontWeight="Bold" />
+        <Run Text="{Binding SelectedMessage.RecipientEmail}" />
+      </TextBlock>
+
+      <TextBlock  >
+        <Run Text="Datum: " FontWeight="Bold"/>
+        <Run Text="{Binding SelectedMessage.SentDate}" />
+      </TextBlock>
+      <TextBlock Text="{Binding SelectedMessage.Content}" TextWrapping="Wrap" />
       <!-- Evtl. noch ein Image für Gravatar etc. -->
     </StackPanel>
 
-    <StackPanel Orientation="Horizontal" Spacing="10">
-        <Button Content="Sortiere nach Absender" Click="SortBySender_Click"/>
-        <Button Content="Sortiere nach Datum" Click="SortByDate_Click"/>
-    </StackPanel>
+    
   </Grid>
 </Window>
