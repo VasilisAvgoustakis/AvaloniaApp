@@ -8,6 +8,8 @@ using Microsoft.Extensions.Logging;
 using System.Linq.Expressions;
 using System;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace MsgApp.ViewModels
 {
@@ -15,6 +17,8 @@ namespace MsgApp.ViewModels
   {
     private readonly JsonMessageLoader _messageLoader;
     private readonly ILogger<MainWindowViewModel> _logger;
+
+    private CancellationTokenSource? _readCancellation;
     public event PropertyChangedEventHandler? PropertyChanged;
 
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
@@ -32,6 +36,17 @@ namespace MsgApp.ViewModels
 
         _selectedMessage = value;
         OnPropertyChanged();
+
+        // 3 sec timer
+        // abrrechen falls schon ein Timer läuft
+        _readCancellation?.Cancel();
+        _readCancellation = new CancellationTokenSource();
+
+        if (_selectedMessage != null)
+        {
+          // Async
+          MarkAsReadAfterDelay(_selectedMessage, _readCancellation.Token);
+        }
       }
     }
 
@@ -73,6 +88,27 @@ namespace MsgApp.ViewModels
         Messages = new ObservableCollection<Message>(sorted);
 
         OnPropertyChanged(nameof(Messages));
+    }
+
+    private async void MarkAsReadAfterDelay(Message? msg, CancellationToken token)
+    {
+      try
+      {
+        Console.WriteLine("MarkAsRead method called!");
+        await Task.Delay(3000, token);
+
+        // Falls nicht gecancelled und noch ausgewählt
+        if (!token.IsCancellationRequested && SelectedMessage == msg)
+        {
+          msg.IsRead = true;
+          OnPropertyChanged("IsRead");
+        }
+      }
+      catch (Exception ex)
+      {
+        // Timer abgebrochen also nichts tun
+        _logger.LogError(ex, "Fehler beim 'MarkASReadAfterDelay'!");
+      }
     }
 
   }
