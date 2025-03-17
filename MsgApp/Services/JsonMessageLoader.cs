@@ -29,7 +29,6 @@ public class JsonMessageLoader
 
             int msgCount = messages?.Count ?? 0;
 
-            _logger.LogInformation($"Datei geladen. Anzahl Nachrichten: {msgCount}");
             
             return messages ?? new List<Message>();
         }

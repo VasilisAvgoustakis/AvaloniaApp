@@ -16,7 +16,7 @@ namespace MsgApp.Tests
             // Und gibst sie in den Konstruktor:
             var loader = new JsonMessageLoader(nullLogger);
 
-            var path = "../MsgApp/Data/sample-messages.json"; // Pfad zu deiner JSON-Datei
+            var path = "../MsgApp/Data/sample-messages.json"; // Pfad zu JSON-Datei
 
             // Act
             var messages = loader.LoadMessagesFromJson(path);

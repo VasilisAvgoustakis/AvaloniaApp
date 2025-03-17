@@ -10,6 +10,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using MsgApp.Services;
 
 namespace MsgApp.ViewModels
 {
@@ -17,6 +18,8 @@ namespace MsgApp.ViewModels
   {
     private readonly JsonMessageLoader _messageLoader;
     private readonly ILogger<MainWindowViewModel> _logger;
+
+    private readonly ITimerService _timerService;
 
     private CancellationTokenSource? _readCancellation;
     public event PropertyChangedEventHandler? PropertyChanged;
@@ -51,9 +54,12 @@ namespace MsgApp.ViewModels
     }
 
     // Konstruktor fürs MainWindow
-    public MainWindowViewModel(JsonMessageLoader messageLoader, ILogger<MainWindowViewModel> logger)
+    public MainWindowViewModel(JsonMessageLoader messageLoader, ILogger<MainWindowViewModel> logger, ITimerService timerService)
     {
       _logger = logger;
+
+      _timerService = timerService;
+
       // Messages laden
       _messageLoader = messageLoader;
       try
@@ -94,8 +100,8 @@ namespace MsgApp.ViewModels
     {
       try
       {
-        Console.WriteLine("MarkAsRead method called!");
-        await Task.Delay(3000, token);
+        //await Task.Delay(3000, token);
+        await _timerService.DelayAsync(TimeSpan.FromMilliseconds(3000), token);
 
         // Falls nicht gecancelled und noch ausgewählt
         if (!token.IsCancellationRequested && SelectedMessage == msg)
@@ -103,6 +109,8 @@ namespace MsgApp.ViewModels
           msg.IsRead = true;
           OnPropertyChanged("IsRead");
         }
+
+        _logger.LogInformation("Nachricht von {msg.SenderName} erfolgreich vom Nutzer gelesen!", msg.SenderName);
       }
       catch (Exception ex)
       {
@@ -110,6 +118,7 @@ namespace MsgApp.ViewModels
         _logger.LogError(ex, "Fehler beim 'MarkASReadAfterDelay'!");
       }
     }
+
 
   }
 }

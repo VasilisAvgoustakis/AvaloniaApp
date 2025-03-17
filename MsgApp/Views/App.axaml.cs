@@ -6,6 +6,8 @@ using Microsoft.Extensions.Logging;
 using Serilog;
 using Serilog.Extensions.Logging;
 using MsgApp.ViewModels;
+using MsgApp.Services;
+using System;
 
 
 namespace MsgApp;
@@ -44,6 +46,8 @@ public partial class App : Application
         services.AddTransient<JsonMessageLoader>();
         // erstelle eine neue MainWIndow mit Abhängigkeiten
         services.AddTransient<MainWindow>();
+        // Services für MainWindowViewModel addieren
+        services.AddTransient<ITimerService, ProductionTimer>();
         // estelle eine neuen MainWindowViewModel und versorge ihn mit dessen Abhängigkeiten
         services.AddTransient<MainWindowViewModel>();
 
@@ -56,10 +60,10 @@ public partial class App : Application
 
 
         // JsonMessageLoader ausprobieren
-        var loader = serviceProvider.GetRequiredService<JsonMessageLoader>();
-        var messages = loader.LoadMessagesFromJson("Data/sample-messages.json");
+        // var loader = serviceProvider.GetRequiredService<JsonMessageLoader>();
+        // var messages = loader.LoadMessagesFromJson("Data/sample-messages.json");
 
-        logger.LogInformation("Anwendung fertig, geladene Nachrichten: {Count}", messages.Count);
+        // logger.LogInformation("Anwendung fertig, geladene Nachrichten: {Count}", messages.Count);
 
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
