@@ -4,17 +4,23 @@ using MsgApp.Models;
 using System.Collections.Generic;
 using System.IO;
 using System;
+using MsgApp.Services;
+using System.Threading.Tasks;
+using System.Net.Http;
+using Avalonia.Media.Imaging;
 
 // Klasse zum Laden der Nachrichten aus der JSON  
 public class JsonMessageLoader
 {
   private readonly ILogger<JsonMessageLoader> _logger;
+  private readonly GravatarService _gravatarService;
 
   // Konstruktor-Injection: Der DI-Container wird
   // hier einen ILogger<JsonMessageLoader> übergeben.
-  public JsonMessageLoader(ILogger<JsonMessageLoader> logger)
+  public JsonMessageLoader(ILogger<JsonMessageLoader> logger, GravatarService gravatarService)
   {
       _logger = logger;
+      _gravatarService = gravatarService;
   }
 
   public List<Message> LoadMessagesFromJson(string path)
@@ -29,7 +35,14 @@ public class JsonMessageLoader
 
             int msgCount = messages?.Count ?? 0;
 
-            
+            // berechne Gravatar Urls und setze AvatarUrl property of Messages
+            foreach (var msg in messages)
+            {
+                //msg.AvatarUrl = _gravatarService.GetGravatarUrl(msg.SenderEmail);
+                //_logger.LogInformation(_gravatarService.GetGravatarUrl(msg.SenderEmail));
+                LoadAvatarAsync(msg);
+            } 
+
             return messages ?? new List<Message>();
         }
         catch (Exception ex)
@@ -39,4 +52,35 @@ public class JsonMessageLoader
             return new List<Message>();
         }
     }
+
+
+    public async Task LoadAvatarAsync(Message msg)
+    {
+        try
+        {
+            if (string.IsNullOrEmpty(msg.SenderEmail)) return;
+
+            // Gravatar Url bauen
+            string url = _gravatarService.GetGravatarUrl(msg.SenderEmail);
+
+            // Bytes herunterladen
+            using var httpClient = new HttpClient();
+            var bytes = await httpClient.GetByteArrayAsync(url);
+
+            // image aus Bytes bauen
+            using var ms = new MemoryStream(bytes);
+            var bmp = new Bitmap(ms);
+            
+            // Property of Message Objekt setzen
+            msg.AvatarBitmap = bmp;
+        }
+        catch
+        {
+            // Falls auch die Gravatar Platzhalter versagt
+            msg.AvatarBitmap = new Bitmap("Assets/offlinePlaceholder.png"); 
+        }
+        
+    }
+
+
 }

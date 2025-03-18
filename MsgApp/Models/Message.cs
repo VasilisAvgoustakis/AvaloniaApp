@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using Avalonia.Media.Imaging;
 
 
 namespace MsgApp.Models
@@ -17,23 +18,36 @@ namespace MsgApp.Models
     public string? SenderEmail { get; set; }
     public string? RecipientName { get; set; }
     public string? RecipientEmail { get; set; }
-    public string? GravatarPath { get; set; }
     public string? Subject { get; set; }
     public DateTime? SentDate { get; set; }
     public string? Content { get; set; }
     private bool? _isRead;
     public bool? IsRead
+    {
+        get => _isRead;
+        set
         {
-            get => _isRead;
-            set
+            if (_isRead != value)
             {
-                if (_isRead != value)
-                {
-                    _isRead = value;
-                    OnPropertyChanged();
-                }
+                _isRead = value;
+                OnPropertyChanged();
             }
         }
+    }
+
+    private Bitmap? _avatarBitmap;
+    public Bitmap? AvatarBitmap
+    {
+        get => _avatarBitmap;
+        set
+        {
+            if (_avatarBitmap != value)
+            {
+                _avatarBitmap = value;
+                OnPropertyChanged();
+            }
+        }
+    }
 
   }
 }

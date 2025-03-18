@@ -46,10 +46,13 @@
           <DataTemplate
             x:DataType="models:Message">
             <Border Background="{Binding IsRead, Converter={StaticResource ReadToBrush}}">
-              <StackPanel Orientation="Vertical" Spacing="4" Margin="4">
-                <TextBlock Text="{Binding SenderName}" FontWeight="Bold" />
-                <TextBlock Text="{Binding Subject}" />
-                <TextBlock Text="{Binding SentDate}" />
+              <StackPanel>
+                <Image Source="{Binding AvatarBitmap}" Width="50" Height="50" Stretch="Uniform"/>
+                <StackPanel Orientation="Vertical" Spacing="4" Margin="4">
+                  <TextBlock Text="{Binding SenderName}" FontWeight="Bold" />
+                  <TextBlock Text="{Binding Subject}" />
+                  <TextBlock Text="{Binding SentDate}" />
+                </StackPanel> 
               </StackPanel>
             </Border>
           </DataTemplate>
@@ -65,6 +68,9 @@
     <StackPanel Grid.Column="2" Spacing="8"
         ScrollViewer.VerticalScrollBarVisibility="Auto"
         ScrollViewer.HorizontalScrollBarVisibility="Auto">
+      <StackPanel>
+        <Image Source="{Binding SelectedMessage.AvatarBitmap}" Width="50" Height="50" Stretch="Uniform"/>
+      </StackPanel>
       <TextBlock  FontSize="16" FontWeight="Bold">
         <Run Text="Titel: " />
         <Run Text="{Binding SelectedMessage.Subject}" />

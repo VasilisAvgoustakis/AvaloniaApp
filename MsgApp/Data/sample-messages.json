@@ -4,7 +4,6 @@
       "SenderEmail": "alice@example.com",
       "RecipientName": "Bob",
       "RecipientEmail": "bob@example.com",
-      "GravatarPath": "MsgApp/Data/Gravatars/Screenshot.png",
       "Subject": "Willkommen in der neuen App",
       "SentDate": "2025-03-01T09:00:00",
       "Content": "Hi Bob, herzlich willkommen in unserer Nachrichten-App!",

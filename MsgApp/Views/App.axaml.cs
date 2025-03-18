@@ -48,6 +48,8 @@ public partial class App : Application
         services.AddTransient<MainWindow>();
         // Services für MainWindowViewModel addieren
         services.AddTransient<ITimerService, ProductionTimer>();
+        // GravatarService im DI registrieren
+        services.AddTransient<GravatarService>();
         // estelle eine neuen MainWindowViewModel und versorge ihn mit dessen Abhängigkeiten
         services.AddTransient<MainWindowViewModel>();
 
