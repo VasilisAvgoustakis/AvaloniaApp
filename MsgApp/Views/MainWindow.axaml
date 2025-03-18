@@ -34,7 +34,6 @@
         </Viewbox>
       </StackPanel>
       
-      <!-- Listenansicht (Spalte 0) -->
       <ListBox Grid.Row="1"
         ItemsSource="{Binding Messages}"
         SelectedItem="{Binding SelectedMessage}"
@@ -42,29 +41,34 @@
         ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
         <ListBox.ItemTemplate>
-          <!-- WIE das List-Item gerendert wird -->
           <DataTemplate
             x:DataType="models:Message">
-            <Border Background="{Binding IsRead, Converter={StaticResource ReadToBrush}}">
-              <StackPanel>
-                <Image Source="{Binding AvatarBitmap}" Width="50" Height="50" Stretch="Uniform"/>
                 <StackPanel Orientation="Vertical" Spacing="4" Margin="4">
-                  <TextBlock Text="{Binding SenderName}" FontWeight="Bold" />
-                  <TextBlock Text="{Binding Subject}" />
+                  <Grid >
+                    <Grid.ColumnDefinitions>
+                      <ColumnDefinition Width="Auto" MinWidth="100" />
+                      <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock Grid.Column="0" Text="{Binding SenderName}" 
+                      Foreground="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Sender}"
+                      FontWeight="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Sender}"/>
+                    <Image Grid.Column="1" Source="{Binding AvatarBitmap}" Width="50" Height="50" Stretch="Uniform"/>
+                  </Grid>
+                  
+                  <TextBlock Text="{Binding Subject}"
+                    Foreground="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Title}"
+                  FontWeight="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Title}" />
                   <TextBlock Text="{Binding SentDate}" />
                 </StackPanel> 
-              </StackPanel>
-            </Border>
+             
+           
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
     </Grid>
 
-    <!-- Detail-Ansicht (Spalte 1) -->
     <GridSplitter Grid.Column="1" ResizeDirection="Columns"/>
-    
 
-    <!-- Detail-Ansicht (Spalte 2) -->
     <StackPanel Grid.Column="2" Spacing="8"
         ScrollViewer.VerticalScrollBarVisibility="Auto"
         ScrollViewer.HorizontalScrollBarVisibility="Auto">
@@ -95,7 +99,6 @@
         <Run Text="{Binding SelectedMessage.SentDate}" />
       </TextBlock>
       <TextBlock Text="{Binding SelectedMessage.Content}" TextWrapping="Wrap" />
-      <!-- Evtl. noch ein Image für Gravatar etc. -->
     </StackPanel>
 
     

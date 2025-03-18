@@ -6,7 +6,8 @@
              <!-- "Default" ThemeVariant follows system theme variant. "Dark" or "Light" are other available options. -->
 
     <Application.Resources>
-        <local:BoolToBrushConverter x:Key="ReadToBrush"/>
+        <!-- <local:BoolToBrushConverter x:Key="ReadToBrush"/> -->
+        <local:IsReadToTextStyleConverter x:Key="TextStyleConverter"/>
     </Application.Resources>
 
     <Application.Styles>
