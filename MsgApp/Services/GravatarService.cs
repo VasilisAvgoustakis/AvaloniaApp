@@ -13,7 +13,7 @@ namespace MsgApp.Services
       string normalizedEmail = email.Trim().ToLowerInvariant();
 
       // MD5-Hash berechnen
-      using (var md5 = MD5.Create())
+      using (var md5 = MD5.Create()) // using-Block: Objekt muss IDisposable implementieren
       {
         byte[] emailBytes = Encoding.UTF8.GetBytes(normalizedEmail);
         byte[] hashBytes = md5.ComputeHash(emailBytes);

@@ -8,14 +8,16 @@ using System.Threading;
 namespace MsgApp.Tests
 {
   [TestFixture]
-  class MarkAsReadAfterDelayTest
+  class MarkAsReadAfterDelayTests
   {
     [Test]
     public void MarkAsReadAfterDelay_SetsIsReadImmediately()
     {
       // Arrange
       var messageLoaderNullLogger = NullLogger<JsonMessageLoader>.Instance;
-      var messageLoader = new JsonMessageLoader(messageLoaderNullLogger);
+      var gravatarService = new GravatarService();
+      var httpClientService = new HttpClientService();
+      var messageLoader = new JsonMessageLoader(messageLoaderNullLogger, gravatarService, httpClientService);
 
       var viewModelNullLogger = NullLogger<MainWindowViewModel>.Instance;
       var fakeTimer = new MockTimer();
