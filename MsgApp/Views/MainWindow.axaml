@@ -10,11 +10,8 @@
 
   <Grid>
     <Grid.ColumnDefinitions>
-      <!-- linke Spalte: Message list-->
-      <ColumnDefinition Width="Auto" MinWidth="300" MaxWidth="800" />
-      <!-- Mittlere Spalte für GrittSplitter-->
+      <ColumnDefinition Width="300" MinWidth="275" MaxWidth="800" />
       <ColumnDefinition Width="5"/>
-      <!-- rechte Spalte: dehnt sich -->
       <ColumnDefinition Width="*" MinWidth="240" />
     </Grid.ColumnDefinitions>
 
@@ -24,15 +21,29 @@
         <RowDefinition Height="*"/>
       </Grid.RowDefinitions>
 
-      <StackPanel Grid.Row="0" Orientation="Horizontal">
-        <Viewbox Stretch="Uniform" StretchDirection="Both">
-          <Button Content="Sortiere nach Absender" Click="SortBySender_Click" />
-        </Viewbox>
-        
-        <Viewbox Stretch="Uniform" StretchDirection="Both">
-          <Button Content="Sortiere nach Datum" Click="SortByDate_Click" />
-        </Viewbox>
-      </StackPanel>
+      <Grid Grid.Row="0" MinWidth="300"
+        HorizontalAlignment="Stretch"
+        VerticalAlignment="Stretch">
+        <Grid.ColumnDefinitions>
+          <!-- Jede Spalte füllt 50% der Breite der linken Hauptspalte -->
+          <ColumnDefinition Width="*" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <!-- Button für "Sender" -->
+        <Button Grid.Column="0"
+                Content="Sender"
+                Click="SortBySender_Click" 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"/>
+
+        <!-- Button für "Date" -->
+        <Button Grid.Column="1"
+                Content="Date"
+                Click="SortByDate_Click" 
+                HorizontalAlignment="Stretch"
+                VerticalAlignment="Stretch"/>
+      </Grid>
       
       <ListBox Grid.Row="1"
         ItemsSource="{Binding Messages}"
@@ -75,36 +86,49 @@
     <StackPanel Grid.Column="2" Spacing="8"
         ScrollViewer.VerticalScrollBarVisibility="Auto"
         ScrollViewer.HorizontalScrollBarVisibility="Auto">
+      <Grid>
+        <Grid.ColumnDefinitions>
+          <ColumnDefinition Width="Auto" />
+          <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
 
-      <TextBlock FontSize="16" FontWeight="Bold">
-        <Run Text="Titel: " />
-        <Run Text="{Binding SelectedMessage.Subject}" />
-      </TextBlock>
+        <StackPanel Grid.Column="0" Orientation="Vertical" Spacing="10">
+          <TextBlock>
+            <Run Text="Sender: " FontWeight="Bold" />
+            <Run Text="{Binding SelectedMessage.SenderName}" />
+            <Run Text=" | " />
+            <Run Text="E-mail: " FontWeight="Bold" />
+            <Run Text="{Binding SelectedMessage.SenderEmail}" />
+          </TextBlock>
 
-      <StackPanel Orientation="Horizontal" Spacing="25">
-        <TextBlock>
-          <Run Text="Absender: " FontWeight="Bold" />
-          <Run Text="{Binding SelectedMessage.SenderName}" />
-          <Run Text=" | " />
-          <Run Text="E-mail: " FontWeight="Bold" />
-          <Run Text="{Binding SelectedMessage.SenderEmail}" />
-        </TextBlock>
+          <TextBlock  >
+            <Run Text="Recipient: " FontWeight="Bold"/>
+            <Run Text="{Binding SelectedMessage.RecipientName}" />
+            <Run Text=" | "/>
+            <Run Text="E-mail: " FontWeight="Bold" />
+            <Run Text="{Binding SelectedMessage.RecipientEmail}" />
+          </TextBlock>
 
-        <Image Source="{Binding SelectedMessage.AvatarBitmap}" Width="50"
-          Height="50" Stretch="Uniform" />
-      </StackPanel>
-      <TextBlock  >
-        <Run Text="Empfänger: " FontWeight="Bold"/>
-        <Run Text="{Binding SelectedMessage.RecipientName}" />
-        <Run Text=" | "/>
-        <Run Text="E-mail: " FontWeight="Bold" />
-        <Run Text="{Binding SelectedMessage.RecipientEmail}" />
-      </TextBlock>
+          <TextBlock FontSize="16" FontWeight="Bold">
+            <Run Text="Subject: " />
+            <Run Text="{Binding SelectedMessage.Subject}" />
+          </TextBlock>
+        </StackPanel>
 
-      <TextBlock  >
-        <Run Text="Datum: " FontWeight="Bold"/>
-        <Run Text="{Binding SelectedMessage.SentDate}" />
-      </TextBlock>
+        <StackPanel Grid.Column="1" Orientation="Horizontal" HorizontalAlignment="Right" Spacing="5">
+          <StackPanel  Orientation="Vertical">
+            <TextBlock Text="{Binding SelectedMessage.SentDate, StringFormat={}{0:dd.MM.yyyy}}" HorizontalAlignment="Right" />
+            <TextBlock Text="{Binding SelectedMessage.SentDate, StringFormat={}{0:HH:mm}}"  HorizontalAlignment="Right"/>
+          </StackPanel>
+          <StackPanel>
+            <Image Source="{Binding SelectedMessage.AvatarBitmap}" Width="50"
+                Height="50" Stretch="Uniform" HorizontalAlignment="Right"/>
+          </StackPanel> 
+        </StackPanel>
+      </Grid>
+
+      <Separator Margin="0,10"/>
+
       <TextBlock Text="{Binding SelectedMessage.Content}" TextWrapping="Wrap" />
     </StackPanel>
   </Grid>

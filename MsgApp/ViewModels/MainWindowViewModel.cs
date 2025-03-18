@@ -66,6 +66,8 @@ namespace MsgApp.ViewModels
       {
         var messages = _messageLoader.LoadMessagesFromJson("../MsgApp/Data/sample-messages.json");
         Messages = new ObservableCollection<Message>(messages ?? new List<Message>());
+
+        SelectedMessage = Messages.First();
       }
       catch(Exception ex)
       {
