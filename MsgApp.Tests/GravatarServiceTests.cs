@@ -41,6 +41,7 @@ namespace MsgApp.Tests
       // Hash test email mit dem Service
       serviceFormedUrl =  gravatarService.GetGravatarUrl(testEmail);
 
+      // Assert
       Assert.That(serviceFormedUrl, Is.Not.Null);
       Assert.That(testUrl, Is.EqualTo(serviceFormedUrl));
     }

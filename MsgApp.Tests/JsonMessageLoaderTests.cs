@@ -28,6 +28,11 @@ namespace MsgApp.Tests
 
             // Assert
             Assert.That(messages, Is.Not.Null);
+
+            foreach (var message in messages)
+            {
+                Assert.That(message.AvatarBitmap, Is.Not.Null);
+            }
         }
 
         [Test]
