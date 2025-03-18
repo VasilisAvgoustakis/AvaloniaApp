@@ -11,7 +11,7 @@
   <Grid>
     <Grid.ColumnDefinitions>
       <!-- linke Spalte: Message list-->
-      <ColumnDefinition Width="Auto" MinWidth="240" MaxWidth="800" />
+      <ColumnDefinition Width="Auto" MinWidth="300" MaxWidth="800" />
       <!-- Mittlere Spalte für GrittSplitter-->
       <ColumnDefinition Width="5"/>
       <!-- rechte Spalte: dehnt sich -->
@@ -43,25 +43,28 @@
         <ListBox.ItemTemplate>
           <DataTemplate
             x:DataType="models:Message">
-                <StackPanel Orientation="Vertical" Spacing="4" Margin="4">
-                  <Grid >
+                  <Grid>
                     <Grid.ColumnDefinitions>
-                      <ColumnDefinition Width="Auto" MinWidth="100" />
-                      <ColumnDefinition Width="*" />
+                      <ColumnDefinition Width="70" />
+                      <ColumnDefinition MinWidth="110" />
+                      <ColumnDefinition MinWidth="40" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="{Binding SenderName}" 
-                      Foreground="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Sender}"
-                      FontWeight="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Sender}"/>
-                    <Image Grid.Column="1" Source="{Binding AvatarBitmap}" Width="50" Height="50" Stretch="Uniform"/>
+
+                    <Image Grid.Column="0" Source="{Binding AvatarBitmap}" Width="50" Height="50" Stretch="Uniform"/>
+                    <StackPanel Grid.Column="1" Orientation="Vertical" >
+                      <TextBlock  Text="{Binding SenderName}" 
+                        Foreground="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Sender}"
+                        FontWeight="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Sender}"/>
+                      
+                      <TextBlock Text="{Binding Subject}"
+                      Foreground="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Title}"
+                      FontWeight="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Title}" />
+                    </StackPanel>
+                    <StackPanel Grid.Column="2" Orientation="Vertical">
+                      <TextBlock Text="{Binding SentDate, StringFormat={}{0:dd.MM.yyyy}}" HorizontalAlignment="Right" />
+                      <TextBlock Text="{Binding SentDate, StringFormat={}{0:HH:mm}}"  HorizontalAlignment="Right"/>
+                    </StackPanel>
                   </Grid>
-                  
-                  <TextBlock Text="{Binding Subject}"
-                    Foreground="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Title}"
-                  FontWeight="{Binding IsRead, Converter={StaticResource TextStyleConverter}, ConverterParameter=Title}" />
-                  <TextBlock Text="{Binding SentDate}" />
-                </StackPanel> 
-             
-           
           </DataTemplate>
         </ListBox.ItemTemplate>
       </ListBox>
@@ -72,20 +75,24 @@
     <StackPanel Grid.Column="2" Spacing="8"
         ScrollViewer.VerticalScrollBarVisibility="Auto"
         ScrollViewer.HorizontalScrollBarVisibility="Auto">
-      <StackPanel>
-        <Image Source="{Binding SelectedMessage.AvatarBitmap}" Width="50" Height="50" Stretch="Uniform"/>
-      </StackPanel>
-      <TextBlock  FontSize="16" FontWeight="Bold">
+
+      <TextBlock FontSize="16" FontWeight="Bold">
         <Run Text="Titel: " />
         <Run Text="{Binding SelectedMessage.Subject}" />
       </TextBlock>
-      <TextBlock  >
-        <Run Text="Absender: " FontWeight="Bold" />
-        <Run Text="{Binding SelectedMessage.SenderName}" />
-        <Run Text=" | "/>
-        <Run Text="E-mail: " FontWeight="Bold"/>
-        <Run Text="{Binding SelectedMessage.SenderEmail}" />
-      </TextBlock>
+
+      <StackPanel Orientation="Horizontal" Spacing="25">
+        <TextBlock>
+          <Run Text="Absender: " FontWeight="Bold" />
+          <Run Text="{Binding SelectedMessage.SenderName}" />
+          <Run Text=" | " />
+          <Run Text="E-mail: " FontWeight="Bold" />
+          <Run Text="{Binding SelectedMessage.SenderEmail}" />
+        </TextBlock>
+
+        <Image Source="{Binding SelectedMessage.AvatarBitmap}" Width="50"
+          Height="50" Stretch="Uniform" />
+      </StackPanel>
       <TextBlock  >
         <Run Text="Empfänger: " FontWeight="Bold"/>
         <Run Text="{Binding SelectedMessage.RecipientName}" />
@@ -100,7 +107,5 @@
       </TextBlock>
       <TextBlock Text="{Binding SelectedMessage.Content}" TextWrapping="Wrap" />
     </StackPanel>
-
-    
   </Grid>
 </Window>
