@@ -104,13 +104,15 @@ namespace MsgApp.ViewModels
         await _timerService.DelayAsync(TimeSpan.FromMilliseconds(3000), token);
 
         // Falls nicht gecancelled und noch ausgewählt
-        if (!token.IsCancellationRequested && SelectedMessage == msg)
+        if (!token.IsCancellationRequested && SelectedMessage == msg && msg is not null)
         {
           msg.IsRead = true;
           OnPropertyChanged("IsRead");
+
+          _logger.LogInformation("Nachricht von {msg.SenderName} erfolgreich vom Nutzer gelesen!", msg.SenderName);
         }
 
-        _logger.LogInformation("Nachricht von {msg.SenderName} erfolgreich vom Nutzer gelesen!", msg.SenderName);
+        
       }
       catch (Exception ex)
       {
@@ -118,9 +120,5 @@ namespace MsgApp.ViewModels
         _logger.LogError(ex, "Fehler beim 'MarkASReadAfterDelay'!");
       }
     }
-
-    
-
-
   }
 }

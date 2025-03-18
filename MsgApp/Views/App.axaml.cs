@@ -42,10 +42,14 @@ public partial class App : Application
         });
 
         // Services registrieren
+        
+        // HttpClient Service addieren als Singleton
+        services.AddSingleton<HttpClientService>();
         // erstelle eine neuen JsonMessageLoader und versorge den konstruktor mit dessen Abhängigkeiten (ILogger<JsonMessageLoader> vorher mit services.AddLogging eingefügt und somit bekannt zu den DI Container)
         services.AddTransient<JsonMessageLoader>();
         // erstelle eine neue MainWIndow mit Abhängigkeiten
         services.AddTransient<MainWindow>();
+        
         // Services für MainWindowViewModel addieren
         services.AddTransient<ITimerService, ProductionTimer>();
         // GravatarService im DI registrieren
@@ -59,14 +63,6 @@ public partial class App : Application
         // Test Loggen
         var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
         logger.LogInformation("=== Anwendung startet ===");
-
-
-        // JsonMessageLoader ausprobieren
-        // var loader = serviceProvider.GetRequiredService<JsonMessageLoader>();
-        // var messages = loader.LoadMessagesFromJson("Data/sample-messages.json");
-
-        // logger.LogInformation("Anwendung fertig, geladene Nachrichten: {Count}", messages.Count);
-
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {

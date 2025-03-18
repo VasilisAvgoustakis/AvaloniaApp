@@ -6,48 +6,48 @@ using Avalonia.Media.Imaging;
 
 namespace MsgApp.Models
 {
-  public class Message : INotifyPropertyChanged
-  {
-
-    public event PropertyChangedEventHandler? PropertyChanged;
-
-    private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-     => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
-    public string? SenderName { get; set; }
-    public string? SenderEmail { get; set; }
-    public string? RecipientName { get; set; }
-    public string? RecipientEmail { get; set; }
-    public string? Subject { get; set; }
-    public DateTime? SentDate { get; set; }
-    public string? Content { get; set; }
-    private bool? _isRead;
-    public bool? IsRead
+    public class Message : INotifyPropertyChanged
     {
-        get => _isRead;
-        set
+
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
+         => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+
+        public string? SenderName { get; set; }
+        public string? SenderEmail { get; set; }
+        public string? RecipientName { get; set; }
+        public string? RecipientEmail { get; set; }
+        public string? Subject { get; set; }
+        public DateTime? SentDate { get; set; }
+        public string? Content { get; set; }
+        private bool? _isRead;
+        public bool? IsRead
         {
-            if (_isRead != value)
+            get => _isRead;
+            set
             {
-                _isRead = value;
-                OnPropertyChanged();
+                if (_isRead != value)
+                {
+                    _isRead = value;
+                    OnPropertyChanged();
+                }
             }
         }
-    }
 
-    private Bitmap? _avatarBitmap;
-    public Bitmap? AvatarBitmap
-    {
-        get => _avatarBitmap;
-        set
+        private Bitmap? _avatarBitmap;
+        public Bitmap? AvatarBitmap
         {
-            if (_avatarBitmap != value)
+            get => _avatarBitmap;
+            set
             {
-                _avatarBitmap = value;
-                OnPropertyChanged();
+                if (_avatarBitmap != value)
+                {
+                    _avatarBitmap = value;
+                    OnPropertyChanged();
+                }
             }
         }
-    }
 
-  }
+    }
 }
