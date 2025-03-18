@@ -21,15 +21,11 @@ namespace MsgApp.ViewModels
     private readonly GravatarService _gravatarService;
     private readonly ILogger<MainWindowViewModel> _logger;
     private readonly ITimerService _timerService;
-
     private CancellationTokenSource? _readCancellation;
     public event PropertyChangedEventHandler? PropertyChanged;
-
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-
     public ObservableCollection<Message>? Messages { get; set; }
-
     private Message? _selectedMessage;
     public Message? SelectedMessage 
     { 

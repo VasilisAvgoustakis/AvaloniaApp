@@ -39,9 +39,4 @@ public class JsonMessageLoader
             return new List<Message>();
         }
     }
-
-
-    
-
-
 }
