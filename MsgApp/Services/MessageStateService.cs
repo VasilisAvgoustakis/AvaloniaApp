@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using MsgApp.Models;
 using System.Threading;
 using Microsoft.Extensions.Logging;
@@ -33,10 +32,9 @@ namespace MsgApp.Services
 
         
       }
-      catch (Exception ex)
+      catch
       {
         // Timer abgebrochen also nichts tun
-        _logger.LogError(ex, "Fehler beim 'MarkASReadAfterDelay'!");
       }
     }
   }

@@ -47,8 +47,8 @@ namespace MsgApp.ViewModels
         }
       }
     }
-    
-    
+
+
     // Konstruktor fürs MainWindow
     public MainWindowViewModel(JsonMessageLoader messageLoader,
                               ILogger<MainWindowViewModel> logger,
@@ -103,11 +103,11 @@ namespace MsgApp.ViewModels
 
         _logger.LogInformation($"Avatars erfolgreich geladen!");
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         _logger.LogError(ex, "Fehler beim Laden und Setzten von Avatars in MainWindowViewModel!");
       }
-      
+
     }
 
     public void SortBySender()

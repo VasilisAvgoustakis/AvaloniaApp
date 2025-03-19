@@ -8,7 +8,7 @@ public partial class MainWindow : Window
 {
     public required MainWindowViewModel _mainviewModel;
 
-    // Parameterlose Konstruktor nötig für den XAML-Loader:
+    // Parameterlose Konstruktor nötig für den XAML-Loader
     public MainWindow()
     {
         InitializeComponent();

@@ -11,8 +11,6 @@ public class JsonMessageLoader
 {
     private readonly ILogger<JsonMessageLoader> _logger;
 
-    // Konstruktor-Injection: Der DI-Container wird
-    // hier einen ILogger<JsonMessageLoader> übergeben.
     public JsonMessageLoader(ILogger<JsonMessageLoader> logger)
     {
         _logger = logger;

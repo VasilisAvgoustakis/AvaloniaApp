@@ -26,7 +26,7 @@ namespace MsgApp.Services
     {
       if (string.IsNullOrWhiteSpace(email)) return "https://www.gravatar.com/avatar/?d=mp";
 
-      // Normalisieren: in Kleinbuchstaben und trimmen
+      // Kleinbuchstaben und trimmen
       string normalizedEmail = email.Trim().ToLowerInvariant();
 
       // MD5-Hash berechnen

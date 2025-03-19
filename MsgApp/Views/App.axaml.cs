@@ -4,11 +4,8 @@ using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Extensions.Logging;
 using MsgApp.ViewModels;
 using MsgApp.Services;
-using System;
-using System.IO;
 
 
 namespace MsgApp;
@@ -22,10 +19,10 @@ public partial class App : Application
 
     public override void OnFrameworkInitializationCompleted()
     {
-        // Globaler Serilog-Logger anlegen (Quelle fürs Logging für die ganz App)
+        // Globaler Serilog-Logger (Logging für die ganz App)
         Log.Logger = new LoggerConfiguration()
             // In eine Datei schreiben
-            // RollingInterval.Day => erzeugt jeden Tag eine neue Logdatei "app20250314.log" usw.
+            // RollingInterval.Day => erzeugt jeden Tag eine neue Logdatei
             .WriteTo.File("Logs/MsgApp.log", rollingInterval: RollingInterval.Day)
             .CreateLogger();
 
@@ -54,7 +51,6 @@ public partial class App : Application
         // DI-Container bauen (das objekt was tatsächlich die Objekten erzeugen kann)
         var serviceProvider = services.BuildServiceProvider();
 
-        // Test Loggen
         var logger = serviceProvider.GetRequiredService<ILogger<Program>>();
         logger.LogInformation("=== Anwendung startet ===");
 
@@ -62,7 +58,7 @@ public partial class App : Application
         {
             // ViewModel aus dem Container holen
             var mainVm = serviceProvider.GetRequiredService<MainWindowViewModel>();
-            
+
             // MainWindow erstellen
             var mainWindown = serviceProvider.GetRequiredService<MainWindow>();
 
