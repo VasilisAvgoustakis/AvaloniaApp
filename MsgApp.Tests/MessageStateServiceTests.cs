@@ -22,7 +22,7 @@ namespace MsgApp.Tests
         var gravatarServiceLogger = NullLogger<GravatarService>.Instance;
         var messageStateServiceLogger = NullLogger<MessageStateService>.Instance;
         
-        var httpClientService = new HttpClientService();
+        var httpClientService = new MockHttpClientService();
         _fakeTimer = new MockTimer();
         var messageStateService = new MessageStateService(messageStateServiceLogger, _fakeTimer);
         var gravatarService = new GravatarService(gravatarServiceLogger, httpClientService);
