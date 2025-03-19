@@ -86,33 +86,4 @@ namespace MsgApp.Tests
             Assert.That(_fakeTimer.CallCount, Is.EqualTo(1));
         }
     }
-
-    // Fake JSON-Loader, der eine Dummy-Nachrichtenliste liefert
-    // public class FakeJsonMessageLoader : JsonMessageLoader
-    // {
-    //     public FakeJsonMessageLoader() : base(NullLogger<JsonMessageLoader>.Instance) { }
-    //     public new List<Message> LoadMessagesFromJson(string path)
-    //     {
-    //         // Liefert eine Dummy-Liste (hier z. B. eine leere Liste)
-    //         return new List<Message>();
-    //     }
-    // }
-
-    // // Fake GravatarService, der keine echten Avatare lädt
-    // public class FakeGravatarService : GravatarService
-    // {
-    //     public FakeGravatarService() : base(NullLogger<GravatarService>.Instance, new FakeHttpClientService()) { }
-    //     public new Task LoadAvatarAsync(Message msg)
-    //     {
-    //         // Dummy-Verhalten: Kein Avatar wird geladen
-    //         msg.AvatarBitmap = null;
-    //         return Task.CompletedTask;
-    //     }
-    // }
-
-    // // Fake HttpClientService (nur als Platzhalter)
-    // public class FakeHttpClientService : HttpClientService
-    // {
-    //     public FakeHttpClientService() : base() { }
-    // }
 }
