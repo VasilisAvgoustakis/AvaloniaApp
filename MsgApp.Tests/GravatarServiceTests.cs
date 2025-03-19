@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using System.Security.Cryptography;
+using Microsoft.Extensions.Logging.Abstractions;
 using MsgApp.Services;
 using System.Text;
 
@@ -9,12 +10,22 @@ namespace MsgApp.Tests
   [TestFixture]
   public class GravatarServiceTests
   {
+
+    private GravatarService _gravatarService;
+
+    [SetUp]
+    public void SetUp()
+    {
+      var logger = NullLogger<GravatarService>.Instance;
+      var httpClient = new MockHttpClientService();
+
+      _gravatarService = new GravatarService(logger, httpClient);
+    }
+    
+
     [Test]
     public void BuildGravatarUrlWithHash_ValidEMail()
     {
-      // Arrange
-      var gravatarService = new GravatarService();
-
       string testEmail = "test@test.com";
 
       string normalizedTestEmail = testEmail.Trim().ToLowerInvariant();
@@ -39,7 +50,7 @@ namespace MsgApp.Tests
       }
 
       // Hash test email mit dem Service
-      serviceFormedUrl =  gravatarService.GetGravatarUrl(testEmail);
+      serviceFormedUrl =  _gravatarService.GetGravatarUrl(testEmail);
 
       // Assert
       Assert.That(serviceFormedUrl, Is.Not.Null);
@@ -47,10 +58,11 @@ namespace MsgApp.Tests
     }
 
 
-
-
-
-
+    [Test]
+    public void TestLoadAvatarAsync()
+    {
+      
+    }
   }
 
 }
