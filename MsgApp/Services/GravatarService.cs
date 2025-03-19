@@ -69,8 +69,12 @@ namespace MsgApp.Services
       }
       catch (Exception ex)
       {
+        //Basisverzeichnis
+        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        // Pfad zur Bilddatei.
+        string imagePath = Path.Combine(baseDir, "Assets", "offlinePlaceholder.png");
         // Falls auch die Gravatar Platzhalter versagt
-        msg.AvatarBitmap = new Bitmap("Assets/offlinePlaceholder.png");
+        msg.AvatarBitmap = new Bitmap(imagePath);
 
         _logger.LogError(ex, "Fehler beim Laden des Avatars für {Email}", msg.SenderEmail);
       }

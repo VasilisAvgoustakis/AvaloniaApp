@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using System.Threading;
 using MsgApp.Services;
+using System.IO;
 
 namespace MsgApp.ViewModels
 {
@@ -46,7 +47,8 @@ namespace MsgApp.ViewModels
         }
       }
     }
-
+    
+    
     // Konstruktor fürs MainWindow
     public MainWindowViewModel(JsonMessageLoader messageLoader,
                               ILogger<MainWindowViewModel> logger,
@@ -61,7 +63,12 @@ namespace MsgApp.ViewModels
 
       try
       {
-        var messages = _messageLoader.LoadMessagesFromJson("../MsgApp/Data/sample-messages.json");
+        //Basisverzeichnis
+        string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+        // Pfad zur Bilddatei.
+        string messagesDatabPath = Path.Combine(baseDir, "Data", "sample-messages.json");
+
+        var messages = _messageLoader.LoadMessagesFromJson(messagesDatabPath);
         Messages = new ObservableCollection<Message>(messages ?? new List<Message>());
 
         // berechne Gravatar Urls und setze AvatarUrl property of Messages

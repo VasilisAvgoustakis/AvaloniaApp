@@ -8,6 +8,7 @@ using Serilog.Extensions.Logging;
 using MsgApp.ViewModels;
 using MsgApp.Services;
 using System;
+using System.IO;
 
 
 namespace MsgApp;
