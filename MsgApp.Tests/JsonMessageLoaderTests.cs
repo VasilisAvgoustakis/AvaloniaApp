@@ -14,12 +14,9 @@ namespace MsgApp.Tests
             // Arrange
             // Instanz des NullLogger:
             var nullLogger = NullLogger<JsonMessageLoader>.Instance;
-            // Gravatar Service Instanz
-            var gravatarService = new GravatarService();
-            // HttpClient Service Instanz
-            var httpClientService = new HttpClientService();
+
             // Und gibst sie in den Konstruktor:
-            var loader = new JsonMessageLoader(nullLogger, gravatarService, httpClientService);
+            var loader = new JsonMessageLoader(nullLogger);
 
             var path = "../MsgApp/Data/sample-messages.json"; // Pfad zu JSON-Datei
 
@@ -28,21 +25,14 @@ namespace MsgApp.Tests
 
             // Assert
             Assert.That(messages, Is.Not.Null);
-
-            foreach (var message in messages)
-            {
-                Assert.That(message.AvatarBitmap, Is.Not.Null);
-            }
         }
 
         [Test]
         public void LoadMessagesFromJson_InvalidFile_ReturnsEmptyList()
         {
             var nullLogger = NullLogger<JsonMessageLoader>.Instance;
-            var gravatarService = new GravatarService();
-            var httpClientService = new HttpClientService();
 
-            var loader = new JsonMessageLoader(nullLogger, gravatarService, httpClientService);
+            var loader = new JsonMessageLoader(nullLogger);
 
             var path = "Data/nichtVorhanden.json";
 

@@ -15,9 +15,7 @@ namespace MsgApp.Tests
     {
       // Arrange
       var messageLoaderNullLogger = NullLogger<JsonMessageLoader>.Instance;
-      var gravatarService = new GravatarService();
-      var httpClientService = new HttpClientService();
-      var messageLoader = new JsonMessageLoader(messageLoaderNullLogger, gravatarService, httpClientService);
+      var messageLoader = new JsonMessageLoader(messageLoaderNullLogger);
 
       var viewModelNullLogger = NullLogger<MainWindowViewModel>.Instance;
       var fakeTimer = new MockTimer();

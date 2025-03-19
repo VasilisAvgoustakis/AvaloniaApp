@@ -47,11 +47,13 @@ public partial class App : Application
         services.AddSingleton<HttpClientService>();
         // erstelle eine neuen JsonMessageLoader und versorge den konstruktor mit dessen Abhängigkeiten (ILogger<JsonMessageLoader> vorher mit services.AddLogging eingefügt und somit bekannt zu den DI Container)
         services.AddTransient<JsonMessageLoader>();
-        // erstelle eine neue MainWIndow mit Abhängigkeiten
-        services.AddTransient<MainWindow>();
-        
         // Services für MainWindowViewModel addieren
         services.AddTransient<ITimerService, ProductionTimer>();
+
+        services.AddTransient<MessageStateService>();
+
+        // erstelle eine neue MainWIndow mit Abhängigkeiten
+        services.AddTransient<MainWindow>();
         // GravatarService im DI registrieren
         services.AddTransient<GravatarService>();
         // estelle eine neuen MainWindowViewModel und versorge ihn mit dessen Abhängigkeiten
