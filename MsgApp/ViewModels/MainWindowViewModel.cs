@@ -73,6 +73,8 @@ namespace MsgApp.ViewModels
 
         // berechne Gravatar Urls und setze AvatarUrl property of Messages
         SetMessageAvatars();
+        // nach Datum Sortieren on Startup
+        SortByDate();
         // Erste Nachricht als beim default selektierte Nachricht auswählen
         SelectedMessage = Messages.First();
       }
