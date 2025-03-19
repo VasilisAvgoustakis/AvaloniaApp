@@ -28,5 +28,3 @@ publish/
 *.pdb
 *.cache
 *.pyc
-/.repomix
-repomix-output.txt
