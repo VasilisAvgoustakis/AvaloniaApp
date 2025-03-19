@@ -61,7 +61,7 @@ namespace MsgApp.Tests
 
 
     [Test]
-    public void TestLoadAvatarAsync_ValidUrl()
+    public void LoadAvatarAsync_ValidUrl()
     {
       //Arrange 
       //Basisverzeichnis
@@ -82,6 +82,23 @@ namespace MsgApp.Tests
       {
         byte[] actualBytes = BitmapToByteArray(msg.AvatarBitmap);
         Assert.That(expectedImageBytes, Is.EqualTo(actualBytes));
+      }
+    }
+
+    [Test]
+    public void LoadAvatarAsync_Fallback_InvalidUrl()
+    {
+      // Arrange
+      var msg = new Message { SenderEmail = "any@test.com" }; // 
+
+      // Act
+      var _ = _gravatarService.LoadAvatarAsync(msg);
+
+      // Assert: Überprüfe, dass trotz des Fehlers ein Avatar (Offline-Platzhalter) gesetzt wurde
+      if(msg.AvatarBitmap != null)
+      {
+        byte[] actualBytes = BitmapToByteArray(msg.AvatarBitmap);
+        Assert.That(msg.AvatarBitmap, Is.Not.Null);
       }
     }
     

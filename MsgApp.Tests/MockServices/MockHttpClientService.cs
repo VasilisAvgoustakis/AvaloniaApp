@@ -24,6 +24,6 @@ public class MockHttpClientService : HttpClientService
             return Task.FromResult(FakeImageBytes);
         }
         // sonst 
-        throw new NotImplementedException("Nur die Dummy-URL wird unterstützt.");
+        throw new Exception("Simulierter HTTP-Fehler");
     }
 }

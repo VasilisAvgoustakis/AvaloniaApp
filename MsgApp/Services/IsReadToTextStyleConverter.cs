@@ -10,7 +10,7 @@ namespace MsgApp.Services
     {
         // Parameter: "Title" oder "Sender".
         // - Wenn Zieltyp IBrush erwartet wird: Für ungelesen:
-        //   - "Subject": Blau, "Sender": Schwarz; für gelesene Nachrichten: Standard (z. B. Schwarz).
+        //   - "Titel": Blau, "Sender": Schwarz; für gelesene Nachrichten: Standard (z. B. Schwarz).
         // - Wenn als Zieltyp FontWeight erwartet wird: Für ungelesen: Bold, für gelesen: Normal.
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo? culture)
         {

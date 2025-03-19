@@ -83,7 +83,7 @@ namespace MsgApp.Tests
 
             // Assert: Überprüfe, dass unser FakeTimerService (als Teil des MessageStateService)
             // den DelayAsync-Aufruf registriert hat.
-            Assert.That(_fakeTimer.CallCount, Is.EqualTo(1));
+            Assert.That(_fakeTimer.CallCount, Is.EqualTo(2)); // 2 weil im Konstruktor von MainWindowViewModel schon einmal der erste Msg als selected gesetzt wird
         }
     }
 }
