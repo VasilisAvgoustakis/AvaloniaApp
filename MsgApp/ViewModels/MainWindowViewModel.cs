@@ -7,10 +7,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using MsgApp.Services;
-using Avalonia.Media.Imaging;
-using System.IO;
 
 namespace MsgApp.ViewModels
 {
@@ -26,8 +23,8 @@ namespace MsgApp.ViewModels
     => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     public ObservableCollection<Message>? Messages { get; set; }
     private Message? _selectedMessage;
-    public Message? SelectedMessage 
-    { 
+    public Message? SelectedMessage
+    {
       get => _selectedMessage;
       set
       {
@@ -51,8 +48,8 @@ namespace MsgApp.ViewModels
     }
 
     // Konstruktor fürs MainWindow
-    public MainWindowViewModel(JsonMessageLoader messageLoader, 
-                              ILogger<MainWindowViewModel> logger, 
+    public MainWindowViewModel(JsonMessageLoader messageLoader,
+                              ILogger<MainWindowViewModel> logger,
                               MessageStateService messageStateService,
                               GravatarService gravatarService)
     {
@@ -60,52 +57,58 @@ namespace MsgApp.ViewModels
       _logger = logger;
       _messageStateService = messageStateService;
       _messageLoader = messageLoader;
-      
-      
+
+
       try
       {
         var messages = _messageLoader.LoadMessagesFromJson("../MsgApp/Data/sample-messages.json");
         Messages = new ObservableCollection<Message>(messages ?? new List<Message>());
 
         // berechne Gravatar Urls und setze AvatarUrl property of Messages
-        if (messages is not null) // Weg mit der CS8602 Warning
-        {
-            foreach (var msg in messages)
-            {
-                // Bewusst Fire-and-Forget: Avatare laden im Hintergrund
-                var _ = _gravatarService.LoadAvatarAsync(msg);
-            }
-        }
-
+        SetMessageAvatars();
+        // Erste Nachricht als beim default selektierte Nachricht auswählen
         SelectedMessage = Messages.First();
       }
-      catch(Exception ex)
+      catch (Exception ex)
       {
         _logger.LogError(ex, "Fehler beim Laden der Messages in ViewModel! ");
       }
 
     }
-    
+
+    private void SetMessageAvatars()
+    {
+      // berechne Gravatar Urls und setze AvatarUrl property of Messages
+      if (Messages is not null) // Weg mit der CS8602 Warning
+      {
+        foreach (var msg in Messages)
+        {
+          // Bewusst Fire-and-Forget: Avatare laden im Hintergrund
+          var _ = _gravatarService.LoadAvatarAsync(msg);
+        }
+      }
+
+    }
 
     public void SortBySender()
     {
-        if (Messages == null) return;
+      if (Messages == null) return;
 
-        var sorted = Messages.OrderBy(m => m.SenderName ?? string.Empty);
+      var sorted = Messages.OrderBy(m => m.SenderName ?? string.Empty);
 
-        Messages = new ObservableCollection<Message>(sorted);
-        OnPropertyChanged(nameof(Messages));
+      Messages = new ObservableCollection<Message>(sorted);
+      OnPropertyChanged(nameof(Messages));
     }
 
     public void SortByDate()
     {
-        if (Messages == null) return;
+      if (Messages == null) return;
 
-        var sorted = Messages.OrderBy(m => m.SentDate);
+      var sorted = Messages.OrderBy(m => m.SentDate);
 
-        Messages = new ObservableCollection<Message>(sorted);
+      Messages = new ObservableCollection<Message>(sorted);
 
-        OnPropertyChanged(nameof(Messages));
+      OnPropertyChanged(nameof(Messages));
     }
   }
 }
