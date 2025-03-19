@@ -1,8 +1,10 @@
-using NUnit.Framework;
 using System.Security.Cryptography;
 using Microsoft.Extensions.Logging.Abstractions;
 using MsgApp.Services;
 using System.Text;
+using MsgApp.Models;
+using Avalonia.Media.Imaging;
+using Avalonia;
 
 
 namespace MsgApp.Tests
@@ -12,6 +14,7 @@ namespace MsgApp.Tests
   {
 
     private GravatarService _gravatarService;
+    private string _testEmail;
 
     [SetUp]
     public void SetUp()
@@ -20,15 +23,14 @@ namespace MsgApp.Tests
       var httpClient = new MockHttpClientService();
 
       _gravatarService = new GravatarService(logger, httpClient);
+      _testEmail = "test@test.com";
     }
     
 
     [Test]
     public void BuildGravatarUrlWithHash_ValidEMail()
     {
-      string testEmail = "test@test.com";
-
-      string normalizedTestEmail = testEmail.Trim().ToLowerInvariant();
+      string normalizedTestEmail = _testEmail.Trim().ToLowerInvariant();
 
       string testUrl;
       string serviceFormedUrl;
@@ -50,7 +52,7 @@ namespace MsgApp.Tests
       }
 
       // Hash test email mit dem Service
-      serviceFormedUrl =  _gravatarService.GetGravatarUrl(testEmail);
+      serviceFormedUrl =  _gravatarService.GetGravatarUrl(_testEmail);
 
       // Assert
       Assert.That(serviceFormedUrl, Is.Not.Null);
@@ -59,9 +61,37 @@ namespace MsgApp.Tests
 
 
     [Test]
-    public void TestLoadAvatarAsync()
+    public void TestLoadAvatarAsync_ValidUrl()
     {
+      //Arrange 
+      //Basisverzeichnis
+      string baseDir = AppDomain.CurrentDomain.BaseDirectory;
+      // Pfad zur Bilddatei.
+      string imagePath = Path.Combine(baseDir, "Assets", "offlinePlaceholder.png");
       
+      byte[] expectedImageBytes = File.ReadAllBytes(imagePath);
+
+      var msg = new Message();
+      msg.SenderEmail = _testEmail;
+
+      // Act
+      var _ = _gravatarService.LoadAvatarAsync(msg);
+
+      // Assert
+      if(msg.AvatarBitmap != null)
+      {
+        byte[] actualBytes = BitmapToByteArray(msg.AvatarBitmap);
+        Assert.That(expectedImageBytes, Is.EqualTo(actualBytes));
+      }
+    }
+    
+    // Helper Methode
+    public byte[] BitmapToByteArray(Bitmap bitmap)
+    {
+      using var memoryStream = new MemoryStream();
+      // Speichert die Bitmap als PNG im MemoryStream.
+      bitmap.Save(memoryStream);
+      return memoryStream.ToArray();
     }
   }
 

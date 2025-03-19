@@ -8,11 +8,10 @@ namespace MsgApp.Services
 {
     public class IsReadToTextStyleConverter : IValueConverter
     {
-        /// Parameter: "Title" oder "Sender".
-        /// Rückgabewert:
-        /// - Wenn als Zieltyp IBrush erwartet wird: Für ungelesen:
-        ///   - "Title": Blau, "Sender": Schwarz; für gelesene Nachrichten: Standard (z. B. Schwarz).
-        /// - Wenn als Zieltyp FontWeight erwartet wird: Für ungelesen: Bold, für gelesen: Normal.
+        // Parameter: "Title" oder "Sender".
+        // - Wenn Zieltyp IBrush erwartet wird: Für ungelesen:
+        //   - "Subject": Blau, "Sender": Schwarz; für gelesene Nachrichten: Standard (z. B. Schwarz).
+        // - Wenn als Zieltyp FontWeight erwartet wird: Für ungelesen: Bold, für gelesen: Normal.
         public object Convert(object? value, Type targetType, object? parameter, CultureInfo? culture)
         {
             // value ist der isRead-Zustand
