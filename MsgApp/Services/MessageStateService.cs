@@ -29,9 +29,6 @@ namespace MsgApp.Services
         if (!token.IsCancellationRequested && selectedMessage == msg && msg is not null)
         {
           msg.IsRead = true;
-          //OnPropertyChanged("IsRead");
-
-          _logger.LogInformation("Nachricht von {msg.SenderName} erfolgreich vom Nutzer gelesen!", msg.SenderName);
         }
 
         

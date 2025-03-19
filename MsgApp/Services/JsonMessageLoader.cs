@@ -22,19 +22,19 @@ public class JsonMessageLoader
     {
         try
         {
-            _logger.LogInformation($"Lade JSON-Datei: {path}");
+            _logger.LogInformation($"JsonMessageLoader: Lade JSON-Datei: {path}");
 
             string jsonString = File.ReadAllText(path);
             // aus dem JSON-Text C# Objekte machen
             var messages = JsonSerializer.Deserialize<List<Message>>(jsonString);
 
             int msgCount = messages?.Count ?? 0;
-
+            _logger.LogInformation($"JsonMessageLoader: Nachrichten erfolgreich geladen. Anzahl: {msgCount}");
             return messages ?? new List<Message>();
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, $"Fehler beim Laden von {path}");
+            _logger.LogError(ex, $"JsonMessageLoader: Fehler beim Laden von {path}");
             // Im Fehlerfall eine leere Liste zurückgeben
             return new List<Message>();
         }

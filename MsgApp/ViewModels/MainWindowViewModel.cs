@@ -78,16 +78,27 @@ namespace MsgApp.ViewModels
 
     private void SetMessageAvatars()
     {
-      // berechne Gravatar Urls und setze AvatarUrl property of Messages
-      if (Messages is not null) // Weg mit der CS8602 Warning
-      {
-        foreach (var msg in Messages)
-        {
-          // Bewusst Fire-and-Forget: Avatare laden im Hintergrund
-          var _ = _gravatarService.LoadAvatarAsync(msg);
-        }
-      }
+      _logger.LogInformation($"Lade und setzte Avatars!");
 
+      try
+      {
+        // berechne Gravatar Urls und setze AvatarUrl property of Messages
+        if (Messages is not null) // Weg mit der CS8602 Warning
+        {
+          foreach (var msg in Messages)
+          {
+            // Bewusst Fire-and-Forget: Avatare laden im Hintergrund
+            var _ = _gravatarService.LoadAvatarAsync(msg);
+          }
+        }
+
+        _logger.LogInformation($"Avatars erfolgreich geladen!");
+      }
+      catch(Exception ex)
+      {
+        _logger.LogError(ex, "Fehler beim Laden und Setzten von Avatars in MainWindowViewModel!");
+      }
+      
     }
 
     public void SortBySender()

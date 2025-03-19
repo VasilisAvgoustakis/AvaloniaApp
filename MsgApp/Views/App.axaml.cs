@@ -41,23 +41,14 @@ public partial class App : Application
             loggingBuilder.AddSerilog(Log.Logger);
         });
 
-        // Services registrieren
-        
-        // HttpClient Service addieren als Singleton
+        // Services im DI Container registrieren
         services.AddSingleton<HttpClientService>();
-        // erstelle eine neuen JsonMessageLoader und versorge den konstruktor mit dessen Abhängigkeiten (ILogger<JsonMessageLoader> vorher mit services.AddLogging eingefügt und somit bekannt zu den DI Container)
-        services.AddTransient<JsonMessageLoader>();
-        // Services für MainWindowViewModel addieren
+        services.AddSingleton<JsonMessageLoader>();
         services.AddTransient<ITimerService, ProductionTimer>();
-
-        services.AddTransient<MessageStateService>();
-
-        // erstelle eine neue MainWIndow mit Abhängigkeiten
-        services.AddTransient<MainWindow>();
-        // GravatarService im DI registrieren
-        services.AddTransient<GravatarService>();
-        // estelle eine neuen MainWindowViewModel und versorge ihn mit dessen Abhängigkeiten
-        services.AddTransient<MainWindowViewModel>();
+        services.AddSingleton<MessageStateService>();
+        services.AddSingleton<MainWindow>();
+        services.AddSingleton<GravatarService>();
+        services.AddSingleton<MainWindowViewModel>();
 
         // DI-Container bauen (das objekt was tatsächlich die Objekten erzeugen kann)
         var serviceProvider = services.BuildServiceProvider();
