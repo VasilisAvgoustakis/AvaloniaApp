@@ -124,7 +124,7 @@ namespace MsgApp.ViewModels
     {
       if (Messages == null) return;
 
-      var sorted = Messages.OrderBy(m => m.SentDate);
+      var sorted = Messages.OrderByDescending(m => m.SentDate);
 
       Messages = new ObservableCollection<Message>(sorted);
 

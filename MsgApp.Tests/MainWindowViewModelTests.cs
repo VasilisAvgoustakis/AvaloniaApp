@@ -66,9 +66,9 @@ namespace MsgApp.Tests
 
             // Assert: Überprüfe die chronologische Sortierung
             var sorted = _viewModel.Messages.ToList();
-            Assert.That(sorted[0].SentDate, Is.EqualTo(new DateTime(2025, 3, 1)));
+            Assert.That(sorted[0].SentDate, Is.EqualTo(new DateTime(2025, 3, 3)));
             Assert.That(sorted[1].SentDate, Is.EqualTo(new DateTime(2025, 3, 2)));
-            Assert.That(sorted[2].SentDate, Is.EqualTo(new DateTime(2025, 3, 3)));
+            Assert.That(sorted[2].SentDate, Is.EqualTo(new DateTime(2025, 3, 1)));
         }
 
         [Test]
