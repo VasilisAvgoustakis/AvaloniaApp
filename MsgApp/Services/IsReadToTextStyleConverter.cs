@@ -35,11 +35,11 @@ namespace MsgApp.Services
                     }
                     else
                     {
-                        // Gelesen: beide in Schwarz, oder du passt es an
+                        // Gelesen
                         return Brushes.Black;
                     }
                 }
-                // Wenn der Zieltyp FontWeight ist:
+                // Wenn Zieltyp FontWeight
                 else if (targetType == typeof(FontWeight))
                 {
                     return !isRead ? FontWeight.Bold : FontWeight.Normal;
