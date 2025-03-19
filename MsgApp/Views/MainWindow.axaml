@@ -6,6 +6,7 @@
   x:Class="MsgApp.MainWindow"
   x:DataType="vm:MainWindowViewModel"
   Title="MsgApp"
+  Icon="avares://MsgApp/Assets/appicon.png"
   MinWidth="600" MinHeight="400">
 
   <Grid>

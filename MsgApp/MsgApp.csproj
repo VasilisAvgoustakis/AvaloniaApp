@@ -26,6 +26,10 @@
   </ItemGroup>
 
   <ItemGroup>
+    <AvaloniaResource Include="Assets\appicon.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Content Include="Data\sample-messages.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
