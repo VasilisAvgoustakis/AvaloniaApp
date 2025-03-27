@@ -89,26 +89,6 @@ Below are two diagrams showing how the application’s components interact:
     </p>
   </section>
 
-  <section id="mermaid-diagrams">
-    <h2>Mermaid Diagrams</h2>
-    <p>The following diagrams illustrate how the app works:</p>
-    <ul>
-      <li><strong>Sequence Diagram</strong> showing the runtime flow among the main classes.</li>
-      <li><strong>Flow Diagram</strong> showing the project’s overall structure.</li>
-    </ul>
-    <p>
-      See the top of this file (or the <code>docs</code> folder, if you have one) for
-      Mermaid diagram code you can paste into a Markdown or website that supports Mermaid.
-    </p>
-  </section>
-
-  <section id="contributing">
-    <h2>Contributing</h2>
-    <p>
-      Contributions are welcome! Please open an issue or PR if you find bugs or want to add features.
-    </p>
-  </section>
-
   <section id="license">
     <h2>License</h2>
     <p>
