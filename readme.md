@@ -62,7 +62,7 @@
         └── MsgApp.csproj              (Project file)
     </pre>
 
-    ## Architecture Diagrams
+## Architecture Diagrams
 
 Below are two diagrams showing how the application’s components interact:
 
