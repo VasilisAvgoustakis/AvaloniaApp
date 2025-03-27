@@ -1,9 +1,7 @@
-using NUnit.Framework;
 using Microsoft.Extensions.Logging.Abstractions;
-using MsgApp.Models;
 using MsgApp.Services;
 using MsgApp.ViewModels;
-using System.Threading;
+using System.Net.Http;
 
 namespace MsgApp.Tests
 {
@@ -21,11 +19,10 @@ namespace MsgApp.Tests
         var viewModelLogger = NullLogger<MainWindowViewModel>.Instance;
         var gravatarServiceLogger = NullLogger<GravatarService>.Instance;
         var messageStateServiceLogger = NullLogger<MessageStateService>.Instance;
-        
-        var httpClientService = new MockHttpClientService();
+        var httpClient = new MockHttpClientService();
         _fakeTimer = new MockTimer();
         var messageStateService = new MessageStateService(messageStateServiceLogger, _fakeTimer);
-        var gravatarService = new GravatarService(gravatarServiceLogger, httpClientService);
+        var gravatarService = new GravatarService(gravatarServiceLogger, httpClient);
         var messageLoader = new JsonMessageLoader(messageLoaderLogger);
 
         _viewModel = new MainWindowViewModel(messageLoader, viewModelLogger, messageStateService, gravatarService);

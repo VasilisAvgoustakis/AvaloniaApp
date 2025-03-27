@@ -1,7 +1,7 @@
 using MsgApp.Services;
 
 
-public class MockTimer : ITimerService
+public class MockTimer
 {
     //  Zähler um zu sehen, ob DelayAsync aufgerufen wurde.
     public int CallCount { get; private set; }=0;

@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using MsgApp.Models;
 using System.IO;
 using Avalonia.Media.Imaging;
+using System.Net.Http;
+
 
 
 namespace MsgApp.Services
@@ -13,16 +15,16 @@ namespace MsgApp.Services
   public class GravatarService
   {
     private readonly ILogger<GravatarService> _logger;
-    private readonly HttpClientService _httpClient;
+    private readonly HttpClient _httpClient;
 
-    public GravatarService(ILogger<GravatarService> logger, HttpClientService httpClient)
+    public GravatarService(ILogger<GravatarService> logger, HttpClient httpClient)
     {
       _logger = logger;
       _httpClient = httpClient;
     }
 
 
-    public string GetGravatarUrl(string email)
+    public string GetGravatarUrl(string? email)
     {
       if (string.IsNullOrWhiteSpace(email)) return "https://www.gravatar.com/avatar/?d=mp";
 
@@ -45,27 +47,27 @@ namespace MsgApp.Services
       }
     }
 
-    public async Task LoadAvatarAsync(Message msg)
+    public async Task<Bitmap?> LoadAvatarAsync(Message msg)
     {
       try
       {
-        if (string.IsNullOrEmpty(msg.SenderEmail)) return;
+        //if (string.IsNullOrEmpty(msg.SenderEmail)) return;
 
         // Gravatar Url bauen
         string url = GetGravatarUrl(msg.SenderEmail);
 
         // Bytes herunterladen
-        if (_httpClient.Client is not null)
-        {
-          var bytes = await _httpClient.Client.GetByteArrayAsync(url);
+        var bytes = await _httpClient.GetByteArrayAsync(url);
 
-          // image aus Bytes bauen
-          using var ms = new MemoryStream(bytes);
-          var bmp = new Bitmap(ms);
+        // image aus Bytes bauen
+        using var ms = new MemoryStream(bytes);
+        var bmp = new Bitmap(ms);
 
-          // Property of Message Objekt setzen
-          msg.AvatarBitmap = bmp;
-        }
+        // Property of Message Objekt setzen
+        msg.AvatarBitmap = bmp;
+        // return Type for the
+        return bmp;
+        
       }
       catch (Exception ex)
       {
@@ -77,6 +79,8 @@ namespace MsgApp.Services
         msg.AvatarBitmap = new Bitmap(imagePath);
 
         _logger.LogError(ex, "Fehler beim Laden des Avatars für {Email}", msg.SenderEmail);
+
+        return msg.AvatarBitmap;
       }
 
     }

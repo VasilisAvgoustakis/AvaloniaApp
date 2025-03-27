@@ -1,12 +1,14 @@
 ﻿using Avalonia;
 using System;
-using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
+using MsgApp.Models;
 using MsgApp.ViewModels;
 using MsgApp.Services;
+using System.Net.Http;
+
 
 namespace MsgApp;
 
@@ -39,13 +41,14 @@ class Program
         });
 
         // Services im DI Container registrieren
-        services.AddSingleton<HttpClientService>();
+        services.AddTransient<Message>();
+        services.AddSingleton<HttpClient>();
         services.AddSingleton<JsonMessageLoader>();
-        services.AddTransient<ITimerService, ProductionTimer>();
         services.AddSingleton<MessageStateService>();
         services.AddSingleton<MainWindow>();
         services.AddSingleton<GravatarService>();
         services.AddSingleton<MainWindowViewModel>();
+        services.AddTransient<MessageViewModel>();
 
         // DI-Container bauen (das objekt was tatsächlich die Objekten erzeugen kann)
         var serviceProvider = services.BuildServiceProvider();

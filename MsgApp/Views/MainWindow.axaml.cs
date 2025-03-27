@@ -19,6 +19,7 @@ public partial class MainWindow : Window
     :this() // call den Parameterlose Konstruktor zuerst
     {
         _mainviewModel = mainWindowViewModel;
+
         // ViewModel als DataContext
         DataContext = _mainviewModel;
     }

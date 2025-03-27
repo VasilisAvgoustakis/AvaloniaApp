@@ -2,6 +2,7 @@ using System;
 using MsgApp.Models;
 using System.Threading;
 using Microsoft.Extensions.Logging;
+using System.Threading.Tasks;
 
 namespace MsgApp.Services
 { 
@@ -9,32 +10,30 @@ namespace MsgApp.Services
   {
 
     private readonly ILogger<MessageStateService> _logger;
-    private readonly ITimerService _timerService;
-
-    public MessageStateService(ILogger<MessageStateService>  logger, ITimerService timerService)
+    public MessageStateService(ILogger<MessageStateService>  logger)
     {
       _logger = logger;
-      _timerService = timerService;
     }
 
-    public async void MarkAsReadAfterDelay(Message? msg, Message? selectedMessage, CancellationToken token)
+    public async Task<bool> MarkAsReadAfterDelay(Message? msg, Message? selectedMessage, CancellationToken token)
     {
       try
       {
         //await Task.Delay(3000, token);
-        await _timerService.DelayAsync(TimeSpan.FromMilliseconds(3000), token);
+        await Task.Delay(3000, token);
 
         // Falls nicht gecancelled und noch ausgewählt
         if (!token.IsCancellationRequested && selectedMessage == msg && msg is not null)
         {
-          msg.IsRead = true;
+          return true;
         }
 
-        
+        return false;
       }
       catch
       {
         // Timer abgebrochen also nichts tun
+        return false;
       }
     }
   }

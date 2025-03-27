@@ -9,6 +9,7 @@ using System.Linq;
 using System.Threading;
 using MsgApp.Services;
 using System.IO;
+using System.Threading.Tasks;
 
 namespace MsgApp.ViewModels
 {
@@ -22,12 +23,12 @@ namespace MsgApp.ViewModels
     public event PropertyChangedEventHandler? PropertyChanged;
     private void OnPropertyChanged([CallerMemberName] string? propertyName = null)
     => PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-    public ObservableCollection<Message>? Messages { get; set; }
-    private Message? _selectedMessage;
-    public Message? SelectedMessage
+    public ObservableCollection<MessageViewModel>? Messages { get; set; }
+    private MessageViewModel? _selectedMessage;
+    public MessageViewModel? SelectedMessage
     {
       get => _selectedMessage;
-      set
+      set 
       {
         if (_selectedMessage == value) return;
 
@@ -41,9 +42,8 @@ namespace MsgApp.ViewModels
 
         if (_selectedMessage != null)
         {
-          // Async
-          _messageStateService.MarkAsReadAfterDelay(_selectedMessage, _selectedMessage, _readCancellation.Token);
-          OnPropertyChanged("IsRead");
+            // Start the async read-delay in a separate (async) method
+            _ = MarkAsReadWithDelayAsync(_selectedMessage, _readCancellation.Token);
         }
       }
     }
@@ -69,10 +69,10 @@ namespace MsgApp.ViewModels
         string messagesDatabPath = Path.Combine(baseDir, "Data", "sample-messages.json");
 
         var messages = _messageLoader.LoadMessagesFromJson(messagesDatabPath);
-        Messages = new ObservableCollection<Message>(messages ?? new List<Message>());
+        Messages = new ObservableCollection<MessageViewModel>(messages.Select(m => new MessageViewModel(m)));
 
         // berechne Gravatar Urls und setze AvatarUrl property of Messages
-        SetMessageAvatars();
+        var _ = SetMessageAvatarsAsync();
         // nach Datum Sortieren on Startup
         SortByDate();
         // Erste Nachricht als beim default selektierte Nachricht auswählen
@@ -85,7 +85,25 @@ namespace MsgApp.ViewModels
 
     }
 
-    private void SetMessageAvatars()
+    // Then an async helper method:
+    private async Task MarkAsReadWithDelayAsync(MessageViewModel vm, CancellationToken token)
+    {
+        _logger.LogInformation("Starting read-delay for {Message}", vm.Subject);
+        var success = await _messageStateService
+            .MarkAsReadAfterDelay(vm.Message, vm.Message, token);
+        _logger.LogInformation("Finished read-delay; success={Success}", success);
+
+        // If MarkAsReadAfterDelay returned e.g. a bool, we can check
+        if (success)
+        {
+            // Because we are on the VM side, we should set the 
+            // IsRead property on the *MessageViewModel*, not the model.
+            vm.IsRead = true;
+            _logger.LogInformation("Set VM.IsRead = true on {Message}", vm.Subject);
+        }
+    }
+
+    public async Task SetMessageAvatarsAsync()
     {
       _logger.LogInformation($"Lade und setzte Avatars!");
 
@@ -97,7 +115,8 @@ namespace MsgApp.ViewModels
           foreach (var msg in Messages)
           {
             // Bewusst Fire-and-Forget: Avatare laden im Hintergrund
-            var _ = _gravatarService.LoadAvatarAsync(msg);
+            var bmp = await _gravatarService.LoadAvatarAsync(msg.Message);
+            msg.AvatarBitmap = bmp;
           }
         }
 
@@ -116,7 +135,7 @@ namespace MsgApp.ViewModels
 
       var sorted = Messages.OrderBy(m => m.SenderName ?? string.Empty);
 
-      Messages = new ObservableCollection<Message>(sorted);
+      Messages = new ObservableCollection<MessageViewModel>(sorted);
       OnPropertyChanged(nameof(Messages));
     }
 
@@ -124,9 +143,9 @@ namespace MsgApp.ViewModels
     {
       if (Messages == null) return;
 
-      var sorted = Messages.OrderByDescending(m => m.SentDate);
+      var sorted = Messages.OrderByDescending(m => m.Message.SentDate);
 
-      Messages = new ObservableCollection<Message>(sorted);
+      Messages = new ObservableCollection<MessageViewModel>(sorted);
 
       OnPropertyChanged(nameof(Messages));
     }
