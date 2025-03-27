@@ -1,8 +1,6 @@
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using MsgApp.Models;
-using System.Collections.Generic;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Linq;
