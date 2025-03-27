@@ -88,10 +88,8 @@ namespace MsgApp.ViewModels
     // Then an async helper method:
     private async Task MarkAsReadWithDelayAsync(MessageViewModel vm, CancellationToken token)
     {
-        _logger.LogInformation("Starting read-delay for {Message}", vm.Subject);
         var success = await _messageStateService
             .MarkAsReadAfterDelay(vm.Message, vm.Message, token);
-        _logger.LogInformation("Finished read-delay; success={Success}", success);
 
         // If MarkAsReadAfterDelay returned e.g. a bool, we can check
         if (success)

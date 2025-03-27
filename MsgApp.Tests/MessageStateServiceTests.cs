@@ -1,53 +1,64 @@
 using Microsoft.Extensions.Logging.Abstractions;
 using MsgApp.Services;
-using MsgApp.ViewModels;
-using System.Net.Http;
+using MsgApp.Models;
 
 namespace MsgApp.Tests
 {
-  [TestFixture]
-  class MessageStateServiceTests
-  {
-
-    private MainWindowViewModel _viewModel;
-    private MockTimer _fakeTimer;
+ [TestFixture]
+public class MessageStateServiceTests
+{
+    private MessageStateService _service;
 
     [SetUp]
     public void Setup()
     {
-        var messageLoaderLogger = NullLogger<JsonMessageLoader>.Instance;
-        var viewModelLogger = NullLogger<MainWindowViewModel>.Instance;
-        var gravatarServiceLogger = NullLogger<GravatarService>.Instance;
-        var messageStateServiceLogger = NullLogger<MessageStateService>.Instance;
-        var httpClient = new MockHttpClientService();
-        _fakeTimer = new MockTimer();
-        var messageStateService = new MessageStateService(messageStateServiceLogger, _fakeTimer);
-        var gravatarService = new GravatarService(gravatarServiceLogger, httpClient);
-        var messageLoader = new JsonMessageLoader(messageLoaderLogger);
-
-        _viewModel = new MainWindowViewModel(messageLoader, viewModelLogger, messageStateService, gravatarService);
+        _service = new MessageStateService(NullLogger<MessageStateService>.Instance);
     }
 
     [Test]
-    public void MarkAsReadAfterDelay_SetsIsReadImmediately()
+    public async Task MarkAsReadAfterDelay_ReturnsTrue_WhenNotCancelled_AndSelectedMessageIsSame()
     {
-      var messages = _viewModel.Messages;
-      Assert.That(messages, Is.Not.Null, "Messages should not be null");
+        // Arrange
+        var msg = new Message { IsRead = false };
+        var selected = msg; // same reference
+        var cts = new CancellationTokenSource();
 
-      // Act
-      if (messages != null)
-      {
-        foreach (var msg in messages)
-        {
-          // Nachrichten nacheinander selektieren
-          _viewModel.SelectedMessage = msg; 
-          
-          // Kontrolierre ob IsRead was set to true
-          Assert.That(msg.IsRead, Is.True, $"Message from {msg.SenderName} should be marked as read");
-        }
-      }
-      
+        // Act
+        bool result = await _service.MarkAsReadAfterDelay(msg, selected, cts.Token);
+
+        // Assert
+        Assert.That(result, Is.True);
     }
 
-  }
+    [Test]
+    public async Task MarkAsReadAfterDelay_ReturnsFalse_WhenCancelled()
+    {
+        // Arrange
+        var msg = new Message { IsRead = false };
+        var cts = new CancellationTokenSource();
+        cts.Cancel(); // Cancel immediately
+
+        // Act
+        bool result = await _service.MarkAsReadAfterDelay(msg, msg, cts.Token);
+
+        // Assert
+        Assert.That(result, Is.False, "Should return false if token was canceled.");
+    }
+
+    [Test]
+    public async Task MarkAsReadAfterDelay_ReturnsFalse_WhenSelectedMessageDiffers()
+    {
+        // Arrange
+        var msg = new Message { IsRead = false };
+        var otherMsg = new Message(); // different reference
+        var cts = new CancellationTokenSource();
+
+        // Act
+        bool result = await _service.MarkAsReadAfterDelay(msg, otherMsg, cts.Token);
+
+        // Assert
+        Assert.That(result, Is.False, "Should return false if selectedMessage != msg.");
+    }
+}
+
 }
